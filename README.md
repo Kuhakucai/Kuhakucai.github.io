@@ -1,4 +1,4 @@
-[Hux Blog](https://Kuhakucai.github.io)
+[Puppetsho Blog](https://kuhakucai.github.io/)
 ================================
 
 [User Manual 👉](_doc/Manual.md)

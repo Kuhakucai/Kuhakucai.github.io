@@ -61,7 +61,7 @@ kramdown:
 
 
 # Disqus settings
-disqus_username: hux
+disqus_username: Puppetsho
 
 # Netease settings
 netease_comment: false
@@ -74,13 +74,13 @@ netease_comment: false
 
 # Google Analytics
 #ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-g￥a_domain: huangxuan.me
+#g￥a_domain: 
 
 
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "Puppetsho，网上冲浪爱好者 <br> An UI/Frontend dev & designer accidentally growing into a compiler/PL hacker."
+sidebar-about-description: "Puppetsho，网上冲浪爱好者 <br> An Internet Surfer."
 sidebar-avatar: https://github.com/Kuhakucai.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
