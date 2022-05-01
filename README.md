@@ -1,10 +1,5 @@
-[Hux Blog](https://huangxuan.me)
+[Hux Blog](https://Kuhakucai.github.io)
 ================================
-
-> I never expect this becomes popular.
-
-![](http://huangxuan.me/img/blog-desktop.jpg)
-
 
 [User Manual 👉](_doc/Manual.md)
 --------------------------------------------------
@@ -41,17 +36,6 @@ This theme uses the default code syntax highlighter of jekyll, [Rouge](http://ro
 
 Other Resources
 ---------------
-
-Ports
-- [**Hexo**](https://github.com/Kaijun/hexo-theme-huxblog) by @kaijun
-- [**React-SSR**](https://github.com/LucasIcarus/huxpro.github.io/tree/ssr) by @LucasIcarus
-
-[Starter/Boilerplate](https://github.com/huxpro/huxblog-boilerplate)
-- Out of date. Helps wanted for updating it on par with the main repo
-
-Translation
-- [🇨🇳  中文文档（有点过时）](https://github.com/Huxpro/huxpro.github.io/blob/master/_doc/README.zh.md)
-
 
 License
 -------

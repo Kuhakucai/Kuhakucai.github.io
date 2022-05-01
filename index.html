@@ -1,6 +1,6 @@
 ---
 layout: page
-description: "「离开世界之前 一切都是过程」"
+description: "「虽千万人吾往矣」"
 ---
 
 {% for post in paginator.posts %}
@@ -16,9 +16,9 @@ description: "「离开世界之前 一切都是过程」"
         {% endif %}
         <div class="post-content-preview">
             {% if post.lang == 'en' %}
-                {{ post.content | strip_html | truncate:300 }}
+            {{ post.content | strip_html | truncate:300 }}
             {% else %}
-                {{ post.content | strip_html | truncate:200 }}
+            {{ post.content | strip_html | truncate:200 }}
             {% endif %}
         </div>
     </a>
