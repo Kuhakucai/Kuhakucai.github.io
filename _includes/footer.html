@@ -11,14 +11,24 @@
                     <br>
                     Powered by <a href="https://kuhakucai.github.io">Puppetsho Blog</a> |
                     <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"
-                        height="20px"
-                        src="https://ghbtns.com/github-btn.html?user=Kuhakucai&repo=Kuhakucai.github.io&type=star&count=true">
+                            height="20px"
+                            src="https://ghbtns.com/github-btn.html?user=Kuhakucai&repo=Kuhakucai.github.io&type=star&count=true">
                     </iframe>
+                    <br>
+                    <span id="busuanzi_container_site_pv">
+                        本站总访问量<span id="busuanzi_value_site_pv"></span>次，
+                    </span>
+                    <span id="busuanzi_container_site_uv">
+                        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+                    </span>
                 </p>
             </div>
         </div>
     </div>
 </footer>
+
+<!--网站数据统计-->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- jQuery -->
 <script src="{{ "/js/jquery.min.js " | prepend: site.baseurl }}"></script>
@@ -69,8 +79,6 @@
     </script>
     <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
 -->
-
-
 {% if page.plchart %}
 <!-- jquery.tagcloud.js -->
 <script>
@@ -159,7 +167,7 @@
 <script type="text/javascript">
     function generateCatalog(selector) {
 
-        // interop with multilangual 
+        // interop with multilangual
         if ('{{ page.multilingual }}' == 'true') {
             _containerSelector = 'div.post-container.active'
         } else {
@@ -252,7 +260,7 @@
             $en.style.display = "none";
             $en.classList.remove("active");
         }
-        // interop with catalog 
+        // interop with catalog
         generateCatalog(".catalog-body");
     }
 
@@ -289,7 +297,7 @@
         noResultsText: 'No results',
         limit: 50,
         fuzzy: false,
-        // a hack to get escaped subtitle unescaped. for some reason, 
+        // a hack to get escaped subtitle unescaped. for some reason,
         // post.subtitle w/o escape filter nuke entire search.
         templateMiddleware: function (prop, value, template) {
             if (prop === 'subtitle' || prop === 'title') {
@@ -321,7 +329,7 @@
                 $searchClose.on('click', function (e) {
                     e.preventDefault();
                     $searchPage.removeClass('search-active');
-                    $body.attr('class', prevClasses);  // from closure 
+                    $body.attr('class', prevClasses);  // from closure
                 });
                 $searchInput.focus();
             }
