@@ -68,13 +68,16 @@ netease_comment: false
 
 
 
+# 统计
+
 # Analytics settings
-# Baidu Analytics 
-# ba_track_id: [your track id]
+# Baidu Analytics
+ba_track_id: dbe45d08b9f77a1620710265a1605046
 
 # Google Analytics
-#ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-#g￥a_domain: 
+ga_track_id: 'G-5YVGBNTTV5'            # Format: UA-xxxxxx-xx
+ga_domain: auto               # 默认的是 auto, 这里我是自定义了的域名，你如果没有自己的域名，需要改成auto
+
 
 
 
