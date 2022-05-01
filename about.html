@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "About"
-description: "《你是我的梦想》"
+description: "《虽千万人吾往矣》"
 header-img: "img/about-bg.jpg"
 multilingual: true
 ---
@@ -10,16 +10,53 @@ multilingual: true
 
 <!-- Chinese Version -->
 <div class="zh post-container">
-    {% capture about_zh %}{% include about/zh.md %}{% endcapture %}
-    {{ about_zh | markdownify }}
+
+    <!--copied from markdown -->
+    <blockquote>
+        <p>虽千万人吾往矣。</p>
+        <p>However many foes can't bend my will.</p>
+    </blockquote>
+
+    <p>【座右铭】：<strong>虽千万人吾往矣</strong></p>
+
+    <h6>鲁迅《热风》</h6>
+    <p>愿中国青年都摆脱冷气，只是向上走,不必听自暴自弃者流的话，</p>
+    <p>能做事的做事,能发声的发声。</p>
+    <p>有一分热,发一分光。</p>
+    <p>就令萤火一般,也可以在黑暗里发一点光,不必等候炬火。</p>
+    <p>此后如竟没有炬火：我便是唯一的光。</p>
+
+    <h6>不要习惯了黑暗就为黑暗辩护</h6>
+    <p>如果天空是黑暗的，那就摸黑生存；</p>
+    <p>如果自觉无力发光的，那就蜷伏于墙角。</p>
+    <p>但不要习惯了黑暗就为黑暗辩护；</p>
+    <p>不要为自己的苟且而得意；</p>
+    <p>不要嘲讽那些比自己更勇敢热情的人们。</p>
+    <p>我们可以卑微如尘土，</p>
+    <p>不可扭曲如蛆虫。</p>
 </div>
 
-<!-- English Version -->
-<div class="en post-container">
-    {% capture about_en %}{% include about/en.md %}{% endcapture %}
-    {{ about_en | markdownify }}
-</div>
 
+<!-- 文章打赏功能 支持支付宝、微信打赏-->
+<script src='{{ "/js/ds.js" | prepend: site.baseurl }}'></script>
+<script>
+    new tctip({
+        top: '20%',
+        button: {
+            id: 6,
+            type: 'dashang'
+        },
+        list: [
+            {
+                type: 'alipay',
+                qrImg: '{{site.alipay_qr_img}}'
+            }, {
+                type: 'wechat',
+                qrImg: '{{site.wechat_qr_img}}'
+            }
+        ]
+    }).init()
+</script>
 
 {% if site.disqus_username %}
 <!-- disqus 评论框 start -->
@@ -29,7 +66,6 @@ multilingual: true
     </div>
 </div>
 <!-- disqus 评论框 end -->
-
 <!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
