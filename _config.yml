@@ -84,7 +84,7 @@ ga_domain: auto               # 默认的是 auto, 这里我是自定义了的�
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "Puppetsho，网上冲浪爱好者 <br> An Internet Surfer."
-sidebar-avatar: img/favicon.png
+sidebar-avatar: /img/favicon.png
 # sidebar-avatar: https://github.com/Kuhakucai.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
