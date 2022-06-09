@@ -45,7 +45,7 @@ private:
 
 说到这里，私有成员还有：code、Status构造、CopyState。
 
-##### 1. code函数
+##### （1）code函数
 
 ```
 Code code() const {
@@ -55,7 +55,7 @@ Code code() const {
 
 code在返回的时候，根据代码可以知道，当state_ 为nullprt时，返回的是kOk状态，否则从state_中取第四个字节的Code。
 
-##### 2. Status构造
+##### （2） Status构造
 
 在下面的构造中code被断言不为kOk，传递了两个msg，都为Slince类型。
 
@@ -125,7 +125,7 @@ cout << size << endl; // 65
 
 那么此时size就是65。
 
-##### 3. CopyState函数
+##### （3） CopyState函数
 
 首先通过memcpy拿到state[0...3]所表示的state大小，拿到之后构造了新的result，再加上5，随后拷贝state的实际内容到5字节之后，并返回result。
 
