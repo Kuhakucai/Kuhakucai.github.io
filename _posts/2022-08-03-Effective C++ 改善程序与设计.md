@@ -159,4 +159,92 @@ Widget& operator=(const Widget& rhs)
 }
 ```
 
+​		同时在其他赋值相关运算中，也最好采用这一方式：
+
+```
+Widget& operator+=(const Widget& rhs)
+{
+	...
+	return *this;
+}
+Widget& operator=(int rhs)
+{
+	...
+	return *this;
+}
+```
+
+
+
+##### 7、在operator= 中处理 ”自我赋值“
+
+​		”自我赋值“ 发生在对象自己给自己赋值时：
+
+```
+class Widget {...};
+
+Widget w;
+
+w = w;
+```
+
+​		此外也存在难以一眼辨识出来的自我赋值：
+
+```
+a[i] = a[j]; //i和j可能相等
+*px = *py;	//px和py可能指向同一个地址
+```
+
+​		但是这种自我赋值可能带来问题，下面看：
+
+```
+class Bitmap {...};
+class Widget {
+	private:
+		Bitmap *pb;
+};
+
+//此时有一个operator=的实现代码
+Widget& Widget::operator=(const Widget& rhs)
+{
+	delete pb;		//释放原有的bitmap
+	pb = new Bitmap(*rhs.pb);	//new一个新的Bitmap，并使用 rhs.pb的副本
+	return *this;
+}
+```
+
+​		以上这种情况，在自我赋值时存在两种不安全，“自我赋值”的不安全和“异常处理”的不安全，因为在自我赋值时pb和rhs.pb是同一个对象，此时的delete pb导致rhs.pb所指的对象已经被释放，从而导致使用了一块已经被释放掉的内存。所以为了避免这种问题，最好在operator=最前面增加一个"证同测试"已达到自我赋值的检验目的。
+
+```
+Widget& Widget::operator=(const Widget& rhs)
+{
+	if(this == rhs) return *this;
+	
+	delete pb;
+	pb = new Bitmap(*rhs.pb);
+	return *this;
+}
+```
+
+​		这种做法解决“自我赋值安全性”是可行的，但是并没有解决“异常处理的安全性”问题。所以为了同时解决这两个问题，可以引出以下代码：
+
+```
+Widget& Widget::operator=(const Widget& rhs)
+{
+	Bitmap* pOrig = pb;			//先记住原有的pb
+	pb = new Bitmap(*rhs.pb);	//令pb指向rhs.pb的一个copy
+	delete pOrig;				//释放原有的pb内存
+	return *this;
+}
+```
+
+​		这段代码完成了“自我赋值安全性”和“异常处理安全性”，这里阐述一下“异常处理安全性”的条件：
+
+- 不泄露任何资源。
+- 不允许数据败坏。
+
+
+
+##### 8、复制对象时勿忘其每一个成分                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
 ...未完待续
