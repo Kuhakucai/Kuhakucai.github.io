@@ -2,7 +2,7 @@
 layout:     post
 title:      "Effective C++ 改善程序与设计的方法"
 subtitle:   " \"改善程序与设计的方法\""
-date:       2022-08-23 12:00:00
+date:       2022-09-06 12:00:00
 author:     "Puppetsho"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
@@ -471,6 +471,130 @@ void f()
 
 
 
-11、
+##### 11、在资源管理类中提供对原始资源的访问
+
+​		资源管理类是对抗资源泄露的好办法，但是许多APIs需要直接访问原始资源，例如有以下函数处理：
+
+```
+int daysHeld(const Investment *p1);			//返回投资天数
+```
+
+​		此时的API接口需要直接提供一个Investment类型的资源，来返回投资天数，这时候你需要一个函数可将RAII class对象（例如trl::shared_ptr）转换为其内含的原始资源（即底部的Investment *）。一般有两种方法可以达到目的：显示转换和隐式转换。
+
+​		例如trl::shared_ptr和auto_ptr都提供了get成员函数，用来执行显示转换，它会返回智能指针内部的原始指针（的复件）：
+
+```
+int days = daysHeld(pInv.get());	//通过get显示得到其内部的Investment*
+```
+
+​		同时像所有的智能指针一样，trl::shared_ptr和auto_ptr也重载了指针取值操作符（operatpr->和operator*），它们允许隐式转换至底部原始指针：
+
+```
+class Investment {
+public:
+	bool isTaxFree() const;
+	...
+};
+
+Investment* createInvestment();		//factory函数
+
+std::trl::shared_ptr<Investment> pi1(createInvestment());
+bool taxable1 = !(pi1->isTaxFree());	//经由operator-> 访问资源
+
+std::auto_ptr<Investment> pi2(createInvestment());
+bool taxable2 = !((*pi2).isTaxFree());	//经由operator* 访问资源
+
+
+```
+
+总结一下：
+
+​	（1）APIs往往要求访问原始资源，所有每一个RAII class 应该提供一个“取得其所管理的原始资源”的办法。
+
+​	（2）对原始资源的访问可能经由显示转换和隐式转换。一般而言显示转换比较安全，隐式转换比较方便。
+
+
+
+##### 12、成对使用new 和 delete时采用相同形式
+
+​	考虑一下行为：
+
+```
+std::string *stringArray = new std::string[100];
+...
+delete stringArray;
+```
+
+​	此时的new和delete成对存在，但是内存是否有被完全释放掉？答案自然是不可预知的。最低限度，stringArray所含的100个string对象中有99个不太可能被适当删除，因为它们的析构函数很可能没被调用。
+
+​	当你使用new来生成一个对象时，有两件事情发生：（1）内存被分配出来（通过名为 operator new的函数）；（2）针对此内存会有一个或多个构造函数被调用。
+​	当你使用delete来释放内存时，也有两件事情发生：（1）针对此内存会有一个或更多析构函数被调用；（2）内存被释放（通过名为operator delete的函数）。delete最大的问题在于：即将被删除的内存之内究竟存有多少个对象？这个问题的答案也决定了有多少个析构函数必须被调用起来。
+
+​	简单来说，即将被删除的那个指针，所指的是单一对象或对象数组？这是必须搞清楚的问题，因为单一对象的内存布局一般而言不同于数组的内存布局，数组所用的内存通常会包括**“数组大小”**这段记录，以便delete知道需要调用多少次析构函数，而单一对象的内存则不会有这段记录，你可以理解成以下模型。
+
+![image.png](https://s2.loli.net/2022/09/06/a6TPlMeuvS3t7IR.png)
+
+​	当你对着一个指针使用delete，唯一能够让delete知道内存中是否存在一个“数组大小”记录的办法就是你来明确告诉它。如果你使用delete时加上方括号，delete便认定指针指向一个数组，否则认定指向单一对象。再考虑一下情况：
+
+```
+std::string *stringArray = new std::string;
+...
+delete []stringArray;
+```
+
+​	可能会发生什么？结果难以预期，假设内存布局如上述单一对象和对象数组模型，delete会读取若干内存并将它们解释为**“数组大小”**，然后调用多次析构函数，浑然不知它所处理的那块内存不但不是个数组，也或许并未持有它忙着销毁的那种类型的对象。
+
+总结一下：
+
+​	（1）如果在new表达式中使用了[]，必须在相应delete表达式中也使用[]；如果new表达式没有使用[]，一定不要在相应的delete表达式中使用[]。
+
+
+
+##### 13、以独立语句将newed对象置入智能指针
+
+​	考虑以下调用情况：
+
+```
+//有以下两个接口
+int priority();
+void processWidget(std::trl::shared_ptr<Widget>pw, int priority);
+
+//现在考虑调用processWidget
+processWidget(std::trl::shared_ptr<Widget>(new Widget),priority());
+```
+
+​	我们现在分析这段调用，编译器产出一个processWidget调用码之前，必须首先确定即将被传入的各个实参。上述第二实参只是简单的priority函数调用，但是第一实参由两部分组成：
+
+​	（1）new Widget表达式；
+
+​	（2）trl::shared_ptr构造函数。
+
+​	于是在调用processWidget之前，编译器需要做三件事：
+
+​	（1）调用priority
+
+​	（2）执行new Widget
+
+​	（3）调用trl::shared_ptr构造函数
+
+​	C++编译器以什么样的顺序完成这些事情呢？弹性很大，不确定。这和其他语言如Java和C#总以特定顺序完成函数参数的核算不同。不过可以确定的是 "new Widget"一定在 “trl::shared_ptr”之前（需要new Widget才能执行shared_ptr的构造函数），但是priority的调用难以确定。如果编译器选择第二顺位执行它，我们来看结果：
+​	（1）执行new Widget；
+
+​	（2）调用priority；
+
+​	（3）调用trl::shared_ptr构造函数；
+
+​	现在请想想，万一对priority的调用导致了异常，可能会导致 "new Widget"返回的指针遗失，因为它没有被置入trl::shared_ptr中，于是可能就会发生资源泄露，因为在“资源被创建”和 “资源被转换为资源管理对象” 两个时间点之前发生了异常。
+
+​	避免这类问题其实很简单：使用分离语句，分别写出（1）创建Widget，（2）将它置入一个智能指针内，然后再把智能指针传給processWidget：
+
+```
+std::trl::shared_ptr<Widget> pw(new Widget);
+processWidget(pw,priority());
+```
+
+总结：
+
+​	（1）以独立语句将 newed 对象存储于智能指针内。如果不这样做，一旦异常被抛出，很可能导致难以察觉的资源泄露。
 
 ...未完待续
