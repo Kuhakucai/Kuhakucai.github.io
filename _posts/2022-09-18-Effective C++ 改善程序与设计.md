@@ -4,7 +4,7 @@ title:      "Effective C++ 改善程序与设计的方法"
 subtitle:   " \"改善程序与设计的方法\""
 date:       2022-09-18 12:00:00
 author:     "Puppetsho"
-header-img: "img/post-bg-2015.jpg"
+header-img: "img/post-bg-jojo.png"
 catalog: true
 tags:
     - 笔记
