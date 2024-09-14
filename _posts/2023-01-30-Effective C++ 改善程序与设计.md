@@ -35,7 +35,7 @@ class Empty{
 		Empty(const Empty& rhs) {...}	//拷贝构造函数
 		~Empty() {...}	//析构函数
 		
-		Empty &operator()	//赋值操作
+		Empty &operator=(const Empty& rhs)	//赋值操作
 }
 ```
 
